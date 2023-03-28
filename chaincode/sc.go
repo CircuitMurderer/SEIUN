@@ -197,7 +197,7 @@ func main() {
 	if err != nil {
 		log.Panicf("Failed to create chaincode: %v", err)
 	}
-	if cc.Start() != nil {
+	if err = cc.Start(); err != nil {
 		log.Panicf("Failed to start chaincode: %v", err)
 	}
 }
