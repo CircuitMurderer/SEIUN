@@ -13,9 +13,8 @@ networkDown() {
 
 while getopts 'ud' OPT; do
     case $OPT in
-        u) networkUp;;
-        d) networkDown;;
-        ?) echo "use -u to up, -d to down.";;
+    u) networkUp ;;
+    d) networkDown ;;
+    ?) echo "use -u to up, -d to down." ;;
     esac
 done
-

@@ -9,7 +9,7 @@ mkdir -p $LOCAL_CA_PATH/company.seiun.net/assets
 cp $LOCAL_CA_PATH/company.seiun.net/ca/crypto/ca-cert.pem $LOCAL_CA_PATH/company.seiun.net/assets/ca-cert.pem
 cp $LOCAL_CA_PATH/council.seiun.net/ca/crypto/ca-cert.pem $LOCAL_CA_PATH/company.seiun.net/assets/tls-ca-cert.pem
 
-mkdir -p $LOCAL_CA_PATH/school.seiun.net/assets 
+mkdir -p $LOCAL_CA_PATH/school.seiun.net/assets
 cp $LOCAL_CA_PATH/school.seiun.net/ca/crypto/ca-cert.pem $LOCAL_CA_PATH/school.seiun.net/assets/ca-cert.pem
 cp $LOCAL_CA_PATH/council.seiun.net/ca/crypto/ca-cert.pem $LOCAL_CA_PATH/school.seiun.net/assets/tls-ca-cert.pem
 
@@ -79,7 +79,6 @@ cp $LOCAL_CA_PATH/council.seiun.net/assets/tls-ca-cert.pem $LOCAL_CA_PATH/counci
 cp $LOCAL_CA_PATH/council.seiun.net/registers/admin1/msp/signcerts/cert.pem $LOCAL_CA_PATH/council.seiun.net/msp/admincerts/cert.pem
 cp $LOCAL_ROOT_PATH/config/config-msp.yaml $LOCAL_CA_PATH/council.seiun.net/msp/config.yaml
 echo "End council============================="
-
 
 echo "Start company============================="
 echo "Enroll User1"

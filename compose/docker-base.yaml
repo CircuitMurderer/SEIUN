@@ -9,7 +9,7 @@ services:
       - FABRIC_CA_SERVER_DEBUG=true
     networks:
       - ${DOCKER_NETWORKS}
-      
+
   peer-base:
     image: hyperledger/fabric-peer:${FABRIC_BASE_VERSION}
     environment:
