@@ -35,7 +35,7 @@ func main() {
 	fmt.Println("")
 	evalQuery(contract, "GetAllItems")
 	evalInvoke(contract, "ChangeStatus", "CERTNUM2", "valid")
-	evalQuery(contract, "GetAllItems")
+	evalQuery(contract, "GetNetworkDockers")
 }
 
 func formatJSON(data []byte) string {

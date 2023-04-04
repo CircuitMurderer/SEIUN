@@ -2,6 +2,11 @@ version: '2'
 
 networks:
   network:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.0.1
+
 
 services:
   council.seiun.net:
@@ -17,6 +22,9 @@ services:
       - ${LOCAL_CA_PATH}/council.seiun.net/ca:${DOCKER_CA_PATH}/ca
     ports:
       - 7050:7050
+    networks:
+      network:
+        ipv4_address: 172.21.0.100
 
   company.seiun.net:
     container_name: company.seiun.net
@@ -31,6 +39,9 @@ services:
       - ${LOCAL_CA_PATH}/company.seiun.net/ca:${DOCKER_CA_PATH}/ca
     ports:
       - 7250:7050
+    networks:
+      network:
+        ipv4_address: 172.21.0.101
 
   school.seiun.net:
     container_name: school.seiun.net
@@ -45,6 +56,9 @@ services:
       - ${LOCAL_CA_PATH}/school.seiun.net/ca:${DOCKER_CA_PATH}/ca
     ports:
       - 7350:7050
+    networks:
+      network:
+        ipv4_address: 172.21.0.102
   
   group.seiun.net:
     container_name: group.seiun.net
@@ -59,6 +73,9 @@ services:
       - ${LOCAL_CA_PATH}/group.seiun.net/ca:${DOCKER_CA_PATH}/ca
     ports:
       - 7450:7050
+    networks:
+      network:
+        ipv4_address: 172.21.0.103
 
   peer1.company.seiun.net:
     container_name: peer1.company.seiun.net
@@ -75,6 +92,9 @@ services:
       - ${LOCAL_CA_PATH}/company.seiun.net/registers/peer1:${DOCKER_CA_PATH}/peer
     ports:
       - 7251:7251
+    networks:
+      network:
+        ipv4_address: 172.21.0.104
       
   peer1.school.seiun.net:
     container_name: peer1.school.seiun.net
@@ -91,6 +111,9 @@ services:
       - ${LOCAL_CA_PATH}/school.seiun.net/registers/peer1:${DOCKER_CA_PATH}/peer
     ports:
       - 7351:7351
+    networks:
+      network:
+        ipv4_address: 172.21.0.105
 
   peer1.group.seiun.net:
     container_name: peer1.group.seiun.net
@@ -107,6 +130,9 @@ services:
       - ${LOCAL_CA_PATH}/group.seiun.net/registers/peer1:${DOCKER_CA_PATH}/peer
     ports:
       - 7451:7451
+    networks:
+      network:
+        ipv4_address: 172.21.0.106
       
   orderer1.council.seiun.net:
     container_name: orderer1.council.seiun.net
@@ -123,6 +149,9 @@ services:
       - 7051:7051
       - 7052:8888
       - 7053:9999
+    networks:
+      network:
+        ipv4_address: 172.21.0.107
 
   orderer2.council.seiun.net:
     container_name: orderer2.council.seiun.net
@@ -139,6 +168,9 @@ services:
       - 7054:7054
       - 7055:8888
       - 7056:9999
+    networks:
+      network:
+        ipv4_address: 172.21.0.108
       
   orderer3.council.seiun.net:
     container_name: orderer3.council.seiun.net
@@ -155,3 +187,6 @@ services:
       - 7057:7057
       - 7058:8888
       - 7059:9999
+    networks:
+      network:
+        ipv4_address: 172.21.0.109
