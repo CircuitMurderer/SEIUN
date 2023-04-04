@@ -1,3 +1,5 @@
 */vendor
 *.tar.gz
 *.sum
+/data
+/orgs
