@@ -24,7 +24,7 @@ services:
       - 7050:7050
     networks:
       network:
-        ipv4_address: 172.21.0.100
+        ipv4_address: 172.21.0.10
 
   company.seiun.net:
     container_name: company.seiun.net
@@ -41,7 +41,7 @@ services:
       - 7250:7050
     networks:
       network:
-        ipv4_address: 172.21.0.101
+        ipv4_address: 172.21.0.20
 
   school.seiun.net:
     container_name: school.seiun.net
@@ -58,7 +58,7 @@ services:
       - 7350:7050
     networks:
       network:
-        ipv4_address: 172.21.0.102
+        ipv4_address: 172.21.0.30
   
   group.seiun.net:
     container_name: group.seiun.net
@@ -75,7 +75,7 @@ services:
       - 7450:7050
     networks:
       network:
-        ipv4_address: 172.21.0.103
+        ipv4_address: 172.21.0.40
 
   peer1.company.seiun.net:
     container_name: peer1.company.seiun.net
@@ -94,7 +94,7 @@ services:
       - 7251:7251
     networks:
       network:
-        ipv4_address: 172.21.0.104
+        ipv4_address: 172.21.0.21
       
   peer1.school.seiun.net:
     container_name: peer1.school.seiun.net
@@ -113,7 +113,7 @@ services:
       - 7351:7351
     networks:
       network:
-        ipv4_address: 172.21.0.105
+        ipv4_address: 172.21.0.31
 
   peer1.group.seiun.net:
     container_name: peer1.group.seiun.net
@@ -132,7 +132,7 @@ services:
       - 7451:7451
     networks:
       network:
-        ipv4_address: 172.21.0.106
+        ipv4_address: 172.21.0.41
       
   orderer1.council.seiun.net:
     container_name: orderer1.council.seiun.net
@@ -151,7 +151,7 @@ services:
       - 7053:9999
     networks:
       network:
-        ipv4_address: 172.21.0.107
+        ipv4_address: 172.21.0.11
 
   orderer2.council.seiun.net:
     container_name: orderer2.council.seiun.net
@@ -170,7 +170,7 @@ services:
       - 7056:9999
     networks:
       network:
-        ipv4_address: 172.21.0.108
+        ipv4_address: 172.21.0.12
       
   orderer3.council.seiun.net:
     container_name: orderer3.council.seiun.net
@@ -189,4 +189,4 @@ services:
       - 7059:9999
     networks:
       network:
-        ipv4_address: 172.21.0.109
+        ipv4_address: 172.21.0.13
