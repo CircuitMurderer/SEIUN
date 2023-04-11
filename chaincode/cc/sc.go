@@ -1,35 +1,16 @@
-package main
+package cc
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os/exec"
 
 	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
-
-type TCI contractapi.TransactionContextInterface
-
-type SmartContract struct {
-	contractapi.Contract
-}
-
-type CertItem struct {
-	ID      string `json:"ID"`
-	Title   string `json:"Title"`
-	Owner   string `json:"Owner"`
-	Kind    string `json:"Kind"`
-	Family  string `json:"Family"`
-	Info    string `json:"Info"`
-	Status  string `json:"Status"`
-	Reserve string `json:"Reserve"`
-}
 
 func (s *SmartContract) InitLedger(ctx TCI) error {
 	items := []CertItem{
@@ -198,7 +179,6 @@ func (s *SmartContract) GetAllItems(ctx TCI) ([]*CertItem, error) {
 	return items, nil
 }
 
-
 func (s *SmartContract) GetAlivePeers() ([]string, error) {
 	ctx := context.Background()
 
@@ -229,14 +209,4 @@ func (s *SmartContract) GetHost() (string, error) {
 		return "", err
 	}
 	return string(out), nil
-}
-
-func main() {
-	cc, err := contractapi.NewChaincode(&SmartContract{})
-	if err != nil {
-		log.Panicf("Failed to create chaincode: %v", err)
-	}
-	if err = cc.Start(); err != nil {
-		log.Panicf("Failed to start chaincode: %v", err)
-	}
 }
