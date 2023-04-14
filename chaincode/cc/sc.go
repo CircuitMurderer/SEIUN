@@ -1,15 +1,8 @@
 package cc
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"os/exec"
-
-	"strings"
-
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
 )
 
 func (s *SmartContract) InitLedger(ctx TCI) error {
@@ -173,40 +166,10 @@ func (s *SmartContract) GetAllItems(ctx TCI) ([]*CertItem, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		items = append(items, &certItem)
 	}
 
 	return items, nil
 }
 
-func (s *SmartContract) GetAlivePeers() ([]string, error) {
-	ctx := context.Background()
-
-	cli, err := client.NewClientWithOpts(client.WithHost("tcp://172.21.0.1:2375"), client.WithAPIVersionNegotiation())
-	if err != nil {
-		return nil, err
-	}
-
-	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
-	// containers, err := cli.ContainerList(ctx, types.ContainerListOptions{All: true})
-	if err != nil {
-		return nil, err
-	}
-
-	res := make([]string, 0)
-	for _, container := range containers {
-		if strings.HasSuffix(container.Names[0], "seiun.net") {
-			res = append(res, container.ID)
-		}
-	}
-
-	return res, nil
-}
-
-func (s *SmartContract) GetHost() (string, error) {
-	out, err := exec.Command("hostname").Output()
-	if err != nil {
-		return "", err
-	}
-	return string(out), nil
-}

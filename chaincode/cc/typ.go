@@ -20,17 +20,17 @@ type CertItem struct {
 }
 
 type CItem struct {
-	ID     string   `json:"ID"`
-	UserID string   `json:"UsrID"`
-	Status string	`json:"Status"`
-	Shares []string `json:"Shares"`
+	ID     string `json:"ID"`
+	UserID string `json:"UsrID"`
+	PubKey string `json:"PubKey"`
+	// Status string	`json:"Status"`
+
+	IsuTime string   `json:"IsuTime"`
+	RvkTime string   `json:"RvkTime"`
+	Shares  []string `json:"Shares"`
 }
 
 type AlivePeers struct {
-	PeerInfo []string
+	PeerInfo map[string]string `json:"PeerInfo"`
 }
 
-type PeerInfo struct {
-	PeerID   string `json:"PeerID"`
-	PeerName string `json:"PeerName"`
-}
