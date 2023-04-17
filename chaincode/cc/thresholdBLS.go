@@ -12,34 +12,42 @@ type KeyPairs struct {
 	PubKey *share.PubPoly
 }
 
-func genKeys(m, n int, suite *bn256.Suite, data string) ([]KeyPairs, [][]byte, error) {
+func GenKeys(m, n int, allPeers map[string]string, suite *bn256.Suite, data string) (map[string]*KeyPairs, [][]byte, error) {
 	msg := []byte(data)
-	keyPairs := make([]KeyPairs, n)
+	keyPairs := make(map[string]*KeyPairs, 0)
 	secret := suite.G1().Scalar().Pick(suite.RandomStream())
 	
 	priPoly := share.NewPriPoly(suite.G2(), m, secret, suite.RandomStream())
 	pubPoly := priPoly.Commit(suite.G2().Point().Base())
 	signs := make([][]byte, 0)
 
-	for i, pShare := range priPoly.Shares(n) {
-		keyPairs[i].PriKey = pShare
-		keyPairs[i].PubKey = pubPoly
+	i := 0
+	priShares := priPoly.Shares(n)
+	for peer := range allPeers {
+		keyPairs[peer].PriKey = priShares[i]
+		keyPairs[peer].PubKey = pubPoly
 
-		sign, err := tbls.Sign(suite, keyPairs[i].PriKey, msg)
+		sign, err := tbls.Sign(suite, keyPairs[peer].PriKey, msg)
 		if err != nil {
 			return nil, nil, err
 		}
 
 		signs = append(signs, sign)
+		i += 1
 	}
 
 	return keyPairs, signs, nil
 }
 
-func signVerify(m, n int, suite *bn256.Suite, keyPairs []KeyPairs, signs [][]byte, data string) error {
+func SignVerify(m, n int, alivePeers map[string]string, suite *bn256.Suite, keyPairs map[string]*KeyPairs, signs [][]byte, data string) error {
 	msg := []byte(data)
 
-	for _, keyPair := range keyPairs {
+	for peer, keyPair := range keyPairs {
+		_, exists := alivePeers[peer]
+		if !exists {
+			continue
+		}
+
 		sign, err := tbls.Recover(suite, keyPair.PubKey, msg, signs, m, n)
 		if err != nil {
 			return err
@@ -57,6 +65,7 @@ func signVerify(m, n int, suite *bn256.Suite, keyPairs []KeyPairs, signs [][]byt
 
 
 func SignID() error {
+	/*
 	suite := bn256.NewSuite()
 	data := "THISISATEST"
 	n := 10
@@ -71,6 +80,7 @@ func SignID() error {
 	if err != nil {
 		return err
 	}
+	*/
 
 	return nil
 }

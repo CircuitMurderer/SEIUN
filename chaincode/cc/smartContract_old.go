@@ -13,6 +13,21 @@ func (s *SmartContract) InitLedger(ctx TCI) error {
 			Family: "Huazhong University", Info: "Great", Status: "valid", Reserve: ""},
 	}
 
+	alivePeers, err := GetAlivePeers()
+	if err != nil {
+		return err
+	}
+
+	alivePeersJSON, err := json.Marshal(alivePeers)
+	if err != nil {
+		return err
+	}
+
+	err = ctx.GetStub().PutState("AlivePeers", alivePeersJSON)
+	if err != nil {
+		return err
+	}
+
 	for _, item := range items {
 		itemJSON, err := json.Marshal(item)
 		if err != nil {
