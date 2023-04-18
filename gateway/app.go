@@ -33,9 +33,16 @@ func main() {
 	contract := network.GetContract(connector.CcType)
 
 	fmt.Println("")
-	evalQuery(contract, "GetAllItems")
-	evalInvoke(contract, "ChangeStatus", "CERTNUM2", "in!valid")
-	evalQuery(contract, "GetAllItems")
+	evalQuery(contract, "GetAllCerts")
+	evalInvoke(contract, "VerifyCert", "Item-Test1", "Valid")
+	evalQuery(contract, "GetAllCerts")
+
+	//evalInvoke(contract, "AddToWaitingList", "Item-Test1")
+	//evalQuery(contract, "GetWaitingList")
+
+	evalInvoke(contract, "SubmitReq", "TestNt", "YQZhao")	
+	evalQuery(contract, "GetAllCerts")
+	evalQuery(contract, "GetWaitingList")
 }
 
 func formatJSON(data []byte) string {

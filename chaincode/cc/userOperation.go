@@ -2,10 +2,12 @@ package cc
 
 import "encoding/json"
 
-func (s *SmartContract) SubmitReq(ctx TCI, userID string) (string, error) {
+func (s *SmartContract) SubmitReq(ctx TCI, id string, userID string) (string, error) {
+	/*
 	realID := ""
 	for {
 		realID = "Item-" + GenRandomString(123)
+		
 		hasItem, err := s.HasItem(ctx, realID)
 		if err != nil {
 			return "", err
@@ -14,8 +16,10 @@ func (s *SmartContract) SubmitReq(ctx TCI, userID string) (string, error) {
 			break
 		}
 	}
+	*/
 
-	key := GenRandomString(256)
+	realID := "Item-" + id
+	key := "TestKey"
 	cItem := CItem{
 		ID:      realID,
 		UserID:  userID,
@@ -23,7 +27,7 @@ func (s *SmartContract) SubmitReq(ctx TCI, userID string) (string, error) {
 		IsuTime: "",
 		RvkTime: "",
 		Key:     key,
-		Shares:  nil,
+		Shares:  make(map[string]string, 0),
 	}
 
 	itemJSON, err := json.Marshal(cItem)
@@ -35,6 +39,11 @@ func (s *SmartContract) SubmitReq(ctx TCI, userID string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
+	err = s.AddToWaitingList(ctx, realID)
+	if err != nil {
+		return "", err
+	}
+
 	return key, nil
 }

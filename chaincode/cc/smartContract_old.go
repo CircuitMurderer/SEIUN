@@ -6,11 +6,11 @@ import (
 )
 
 func (s *SmartContract) InitLedger(ctx TCI) error {
-	items := []CertItem{
-		{ID: "CERTNUM1", Title: "Outstanding Student", Owner: "Yuki", Kind: "Honor",
-			Family: "Wuhan University", Info: "So great", Status: "valid", Reserve: ""},
-		{ID: "CERTNUM2", Title: "Scholarship", Owner: "Aoki", Kind: "Award",
-			Family: "Huazhong University", Info: "Great", Status: "valid", Reserve: ""},
+	items := []CItem{
+		{ID: "Item-Test1", UserID: "Admin", Status: OtherStatus,
+			IsuTime: "", RvkTime: "", Key: "", Shares: make(map[string]string, 0)},
+		{ID: "Item-Test2", UserID: "Guest", Status: OtherStatus,
+			IsuTime: "", RvkTime: "", Key: "", Shares: make(map[string]string, 0)},
 	}
 
 	alivePeers, err := GetAlivePeers()
@@ -23,7 +23,18 @@ func (s *SmartContract) InitLedger(ctx TCI) error {
 		return err
 	}
 
-	err = ctx.GetStub().PutState("AlivePeers", alivePeersJSON)
+	err = ctx.GetStub().PutState("AllPeers", alivePeersJSON)
+	if err != nil {
+		return err
+	}
+
+	waitingList := make([]string, 0)
+	waitingJSON, err := json.Marshal(waitingList)
+	if err != nil {
+		return err
+	}
+
+	err = ctx.GetStub().PutState("WaitingList", waitingJSON)
 	if err != nil {
 		return err
 	}
@@ -187,4 +198,3 @@ func (s *SmartContract) GetAllItems(ctx TCI) ([]*CertItem, error) {
 
 	return items, nil
 }
-

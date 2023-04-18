@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-export CHAINCODE_ID=basic_1:a8cd1be9d6ae54d0fd20ed3a48a7632e459c7b27af87ddf8e2b2ed1b6a711732
+export CHAINCODE_ID=basic_1:61100ae2b5094f7a402a78aa0535faad87a16e3099eaad724391b7bef3f1a4bb
 
 source envPeerCompany.sh
 peer lifecycle chaincode approveformyorg -o orderer1.council.seiun.net:7051 --tls --cafile $ORDERER_CA --channelID testchannel --name basic --version 1.0 --sequence 1 --waitForEvent --init-required --package-id $CHAINCODE_ID --signature-policy "OR('groupMSP.peer')"
@@ -16,4 +16,4 @@ sleep 5
 peer chaincode invoke --isInit -o orderer1.council.seiun.net:7051 --tls --cafile $ORDERER_CA --channelID testchannel --name basic --peerAddresses peer1.group.seiun.net:7451 --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE -c '{"Args":["InitLedger"]}' # --peerAddresses peer1.school.seiun.net:7351 --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE 
 sleep 5
 #  peer chaincode invoke -o orderer1.council.seiun.net:7051 --tls --cafile $ORDERER_CA --channelID testchannel --name basic --peerAddresses peer1.company.seiun.net:7251 --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE --peerAddresses peer1.school.seiun.net:7351 --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE -c '{"Args":["GetAllItems"]}'
-peer chaincode query -C testchannel -n basic -c '{"Args":["GetAllItems"]}'
+peer chaincode query -C testchannel -n basic -c '{"Args":["GetAllCerts"]}'

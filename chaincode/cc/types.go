@@ -34,10 +34,15 @@ type AlivePeers struct {
 	PeerInfo map[string]string `json:"PeerInfo"`
 }
 
+type WorldState struct {
+
+}
+
 const (
 	ValidCert = iota
 	InvalidCert
 	UnauthedCert
 	OutdatedCert
 	RevokedCert
+	OtherStatus
 )
