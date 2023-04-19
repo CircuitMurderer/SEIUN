@@ -15,7 +15,7 @@ type KeyPair struct {
 	Sign   []byte
 }
 
-func GenKeys(allPeers map[string]string, suite *bn256.Suite, data string, t float64) (map[string]*KeyPair, error) {
+func genKeys(allPeers map[string]string, suite *bn256.Suite, data string, t float64) (map[string]*KeyPair, error) {
 	n := len(allPeers)
 	m := int(math.Ceil(float64(n) * t))
 
@@ -46,7 +46,7 @@ func GenKeys(allPeers map[string]string, suite *bn256.Suite, data string, t floa
 	return keyPairs, nil
 }
 
-func SignVerify(alivePeers map[string]string, suite *bn256.Suite, keyPairs map[string]*KeyPair, data string, t float64) error {
+func signVerify(alivePeers map[string]string, suite *bn256.Suite, keyPairs map[string]*KeyPair, data string, t float64) error {
 	n := len(keyPairs)
 	m := int(math.Ceil(float64(n) * t))
 	
@@ -83,12 +83,12 @@ func SignVerify(alivePeers map[string]string, suite *bn256.Suite, keyPairs map[s
 
 func TBLSVerify(data string, allPeers map[string]string, alivePeers map[string]string, threshold float64) error {
 	suite := bn256.NewSuite()
-	keyPairs, err := GenKeys(allPeers, suite, data, threshold)
+	keyPairs, err := genKeys(allPeers, suite, data, threshold)
 	if err != nil {
 		return err
 	}
 
-	err = SignVerify(alivePeers, suite, keyPairs, data, threshold)
+	err = signVerify(alivePeers, suite, keyPairs, data, threshold)
 	if err != nil {
 		return err
 	}

@@ -3,7 +3,6 @@ package cc
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
 	"strings"
 )
 
@@ -54,7 +53,7 @@ func (s *SmartContract) InitLedger(ctx TCI) error {
 	return nil
 }
 
-func (s *SmartContract) HasItem(ctx TCI, id string) (bool, error) {
+func (s *SmartContract) hasItem(ctx TCI, id string) (bool, error) {
 	itemJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
 		return false, fmt.Errorf("failed to read world state. %v", err)
@@ -125,24 +124,6 @@ func (s *SmartContract) GetAllPeers(ctx TCI) (map[string]string, error) {
 	return allPeers, nil
 }
 
-func (s *SmartContract) AreOriginPeers(ctx TCI) (bool, error) {
-	allPeers, err := s.GetAllPeers(ctx)
-	if err != nil {
-		return false, err
-	}
-
-	nowPeers, err := GetAlivePeers()
-	if err != nil {
-		return false, err
-	}
-
-	if reflect.DeepEqual(allPeers, nowPeers) {
-		return true, nil
-	}
-
-	return false, nil
-}
-
 func (s *SmartContract) GetWaitingList(ctx TCI) ([]string, error) {
 	waitingJSON, err := ctx.GetStub().GetState("WaitingList")
 	if err != nil {
@@ -158,7 +139,7 @@ func (s *SmartContract) GetWaitingList(ctx TCI) ([]string, error) {
 	return waitingList, nil
 }
 
-func (s *SmartContract) PutWaitingList(ctx TCI, waitingList []string) error {
+func (s *SmartContract) putWaitingList(ctx TCI, waitingList []string) error {
 	waitingJSON, err := json.Marshal(waitingList)
 	if err != nil {
 		return err
@@ -179,7 +160,7 @@ func (s *SmartContract) AddToWaitingList(ctx TCI, id string) error {
 	}
 
 	waitingList = append(waitingList, id)
-	err = s.PutWaitingList(ctx, waitingList)
+	err = s.putWaitingList(ctx, waitingList)
 	if err != nil {
 		return err
 	}

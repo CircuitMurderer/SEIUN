@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/vault/shamir"
 )
 
-func SecretDistribute(secret string, allPeers map[string]string, t float64) (map[string]string, error) {
+func secretDistribute(secret string, allPeers map[string]string, t float64) (map[string]string, error) {
 	if len(secret) == 0 {
 		return nil, fmt.Errorf("secret empty")
 	}
@@ -31,7 +31,7 @@ func SecretDistribute(secret string, allPeers map[string]string, t float64) (map
 	return shares, nil
 }
 
-func SecretCollect(shares map[string]string, alivePeers map[string]string) (string, error) {
+func secretCollect(shares map[string]string, alivePeers map[string]string) (string, error) {
 	sharesByte := make([][]byte, 0)
 	for peer, share := range shares {
 		_, exists := alivePeers[peer]
@@ -52,12 +52,12 @@ func SecretCollect(shares map[string]string, alivePeers map[string]string) (stri
 }
 
 func SSSVerify(data string, allPeers map[string]string, alivePeers map[string]string, threshold float64) error {
-	shares, err := SecretDistribute(data, allPeers, threshold)
+	shares, err := secretDistribute(data, allPeers, threshold)
 	if err != nil {
 		return err
 	}
 
-	finData, err := SecretCollect(shares, alivePeers)
+	finData, err := secretCollect(shares, alivePeers)
 	if err != nil {
 		return err
 	}

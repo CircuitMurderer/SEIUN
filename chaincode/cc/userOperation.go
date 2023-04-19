@@ -4,21 +4,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strings"
 	"time"
 )
 
-func (s *SmartContract) SubmitReq(ctx TCI, id string, userID string) (string, error) {
-	realID := "Item-" + id
-	hasItem, err := s.HasItem(ctx, realID)
+func (s *SmartContract) SubmitReq(ctx TCI, id string, userID string, key string) (string, error) {
+	realID := id
+	if !strings.HasPrefix(id, "Item-") {
+		realID = "Item-" + id
+	}
+
+	hasIt, err := s.hasItem(ctx, realID)
 	if err != nil {
 		return "", err
 	}
 
-	if hasItem {
+	if hasIt {
 		return "", fmt.Errorf("this ID has already been used")
 	}
 
-	key := "TestKey"
 	cItem := CertItem{
 		ID:      realID,
 		UserID:  userID,
@@ -62,21 +66,11 @@ func (s *SmartContract) SubmitReq(ctx TCI, id string, userID string) (string, er
 		return "", err
 	}
 
-	return key, nil
+	return realID, nil
 }
 
 func (s *SmartContract) UserGetCertKey(ctx TCI, id string) (string, error) {
 	certItem, err := s.GetCert(ctx, id)
-	if err != nil {
-		return "", err
-	}
-
-	allPeers, err := s.GetAllPeers(ctx)
-	if err != nil {
-		return "", err
-	}
-
-	alivePeers, err := GetAlivePeers()
 	if err != nil {
 		return "", err
 	}
@@ -106,8 +100,18 @@ func (s *SmartContract) UserGetCertKey(ctx TCI, id string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		
+
 		return "", fmt.Errorf("this cert is outdated")
+	}
+
+	allPeers, err := s.GetAllPeers(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	alivePeers, err := GetAlivePeers()
+	if err != nil {
+		return "", err
 	}
 
 	if !reflect.DeepEqual(allPeers, alivePeers) {
