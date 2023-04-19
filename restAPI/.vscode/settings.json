@@ -1,5 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://json.schemastore.org/yamllint.json": "file:///root/SEIUN/restAPI/conf.yaml"
-    }
-}
