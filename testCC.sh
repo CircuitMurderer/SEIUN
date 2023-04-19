@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-export CHAINCODE_ID=basic_1:03a3033b7f316aa0846b1e8c7bfce88be4d39fc0f61a0abd9b92c5c03ac55673
+export CHAINCODE_ID=basic_1:573adc7465183bd5d7594e4f6c4b63d77ad1e4f9d912eb07ca199dbff69c812b
 
 source envPeerCompany.sh
 peer lifecycle chaincode approveformyorg -o orderer1.council.seiun.net:7051 --tls --cafile $ORDERER_CA --channelID testchannel --name basic --version 1.0 --sequence 1 --waitForEvent --init-required --package-id $CHAINCODE_ID --signature-policy "OR('groupMSP.peer')"
