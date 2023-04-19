@@ -8,11 +8,11 @@ import (
 )
 
 func (s *SmartContract) InitLedger(ctx TCI) error {
-	items := []CItem{
-		{ID: "Item-Test1", UserID: "Admin", Status: OtherStatus, ReqTime: "",
-			IsuTime: "", RvkTime: "", ExpDays: -1, Key: "", Shares: make(map[string]string, 0)},
-		{ID: "Item-Test2", UserID: "Guest", Status: OtherStatus, ReqTime: "",
-			IsuTime: "", RvkTime: "", ExpDays: -1, Key: "", Shares: make(map[string]string, 0)},
+	items := []CertItem{
+		{ID: "Item-Test1", UserID: "Admin", Status: OtherStatus,
+			ReqTime: "", IsuTime: "", RvkTime: "", ExpDays: 0, Key: ""},
+		{ID: "Item-Test2", UserID: "Guest", Status: OtherStatus,
+			ReqTime: "", IsuTime: "", RvkTime: "", ExpDays: 0, Key: ""},
 	}
 
 	alivePeers, err := GetAlivePeers()
@@ -54,7 +54,6 @@ func (s *SmartContract) InitLedger(ctx TCI) error {
 	return nil
 }
 
-
 func (s *SmartContract) HasItem(ctx TCI, id string) (bool, error) {
 	itemJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
@@ -64,8 +63,7 @@ func (s *SmartContract) HasItem(ctx TCI, id string) (bool, error) {
 	return itemJSON != nil, nil
 }
 
-
-func (s *SmartContract) GetCert(ctx TCI, id string) (*CItem, error) {
+func (s *SmartContract) GetCert(ctx TCI, id string) (*CertItem, error) {
 	itemJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get world state. %v", err)
@@ -74,7 +72,7 @@ func (s *SmartContract) GetCert(ctx TCI, id string) (*CItem, error) {
 		return nil, fmt.Errorf("no such item. %s", id)
 	}
 
-	certItem := CItem{}
+	certItem := CertItem{}
 	err = json.Unmarshal(itemJSON, &certItem)
 	if err != nil {
 		return nil, err
@@ -83,14 +81,14 @@ func (s *SmartContract) GetCert(ctx TCI, id string) (*CItem, error) {
 	return &certItem, nil
 }
 
-func (s *SmartContract) GetAllCerts(ctx TCI) ([]*CItem, error) {
+func (s *SmartContract) GetAllCerts(ctx TCI) ([]*CertItem, error) {
 	itemsIter, err := ctx.GetStub().GetStateByRange("", "")
 	if err != nil {
 		return nil, err
 	}
 	defer itemsIter.Close()
 
-	items := make([]*CItem, 0)
+	items := make([]*CertItem, 0)
 	for itemsIter.HasNext() {
 		item, err := itemsIter.Next()
 		if err != nil {
@@ -101,13 +99,13 @@ func (s *SmartContract) GetAllCerts(ctx TCI) ([]*CItem, error) {
 			continue
 		}
 
-		cItem := CItem{}
-		err = json.Unmarshal(item.Value, &cItem)
+		CertItem := CertItem{}
+		err = json.Unmarshal(item.Value, &CertItem)
 		if err != nil {
 			return nil, err
 		}
 
-		items = append(items, &cItem)
+		items = append(items, &CertItem)
 	}
 	return items, nil
 }

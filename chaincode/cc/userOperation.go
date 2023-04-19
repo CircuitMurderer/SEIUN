@@ -19,16 +19,15 @@ func (s *SmartContract) SubmitReq(ctx TCI, id string, userID string) (string, er
 	}
 
 	key := "TestKey"
-	cItem := CItem{
+	cItem := CertItem{
 		ID:      realID,
 		UserID:  userID,
 		Status:  UnauthedCert,
 		ReqTime: time.Now().Format("2006-01-02 15:04:05"),
 		IsuTime: "",
 		RvkTime: "",
-		ExpDays: -1,
+		ExpDays: 0,
 		Key:     key,
-		Shares:  make(map[string]string, 0),
 	}
 
 	allPeers, err := s.GetAllPeers(ctx)

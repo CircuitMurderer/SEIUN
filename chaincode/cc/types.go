@@ -10,34 +10,13 @@ type SmartContract struct {
 
 type CertItem struct {
 	ID      string `json:"ID"`
-	Title   string `json:"Title"`
-	Owner   string `json:"Owner"`
-	Kind    string `json:"Kind"`
-	Family  string `json:"Family"`
-	Info    string `json:"Info"`
-	Status  string `json:"Status"`
-	Reserve string `json:"Reserve"`
-}
-
-type CItem struct {
-	ID      string `json:"ID"`
 	UserID  string `json:"UsrID"`
 	Status  int    `json:"Status"`
-	ReqTime	string `json:"ReqTime"`
+	ExpDays int    `json:"ExpDays"`
+	ReqTime string `json:"ReqTime"`
 	IsuTime string `json:"IsuTime"`
 	RvkTime string `json:"RvkTime"`
-	ExpDays	int	   `json:"ExpDays"`
-
-	Key    string            `json:"Key"`
-	Shares map[string]string `json:"Shares"`
-}
-
-type AlivePeers struct {
-	PeerInfo map[string]string `json:"PeerInfo"`
-}
-
-type WorldState struct {
-
+	Key     string `json:"Key"`
 }
 
 const (

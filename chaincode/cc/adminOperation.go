@@ -19,13 +19,16 @@ func (s *SmartContract) VerifyCert(ctx TCI, id string, status string, expDays in
 		certItem.IsuTime = time.Now().Format("2006-01-02 15:04:05")
 	case "Invalid":
 		certItem.Status = InvalidCert
+		certItem.ExpDays = -1
 	case "Outdate":
 		certItem.Status = OutdatedCert
+		certItem.ExpDays = 0
 	case "Revoke":
 		certItem.Status = RevokedCert
+		certItem.ExpDays = -1
 		certItem.RvkTime = time.Now().Format("2006-01-02 15:04:05")
 	default:
-		return fmt.Errorf("no such status")
+		return fmt.Errorf("unknown status")
 	}
 
 	itemJSON, err := json.Marshal(certItem)
