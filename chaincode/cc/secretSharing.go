@@ -1,7 +1,6 @@
 package cc
 
 import (
-	"encoding/hex"
 	"fmt"
 	"math"
 
@@ -40,11 +39,7 @@ func SecretCollect(shares map[string]string, alivePeers map[string]string) (stri
 			continue
 		}
 
-		tmp, err := hex.DecodeString(share)
-		if err != nil {
-			return "", err
-		}
-
+		tmp := []byte(share)
 		sharesByte = append(sharesByte, tmp)
 	}
 
@@ -54,4 +49,22 @@ func SecretCollect(shares map[string]string, alivePeers map[string]string) (stri
 	}
 
 	return string(secretByte), nil
+}
+
+func SSSVerify(data string, allPeers map[string]string, alivePeers map[string]string, threshold float64) error {
+	shares, err := SecretDistribute(data, allPeers, threshold)
+	if err != nil {
+		return err
+	}
+
+	finData, err := SecretCollect(shares, alivePeers)
+	if err != nil {
+		return err
+	}
+
+	if finData != data {
+		return fmt.Errorf("combined key not equals the origin key")
+	}
+
+	return nil
 }

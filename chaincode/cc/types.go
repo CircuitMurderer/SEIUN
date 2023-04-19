@@ -23,8 +23,10 @@ type CItem struct {
 	ID      string `json:"ID"`
 	UserID  string `json:"UsrID"`
 	Status  int    `json:"Status"`
+	ReqTime	string `json:"ReqTime"`
 	IsuTime string `json:"IsuTime"`
 	RvkTime string `json:"RvkTime"`
+	ExpDays	int	   `json:"ExpDays"`
 
 	Key    string            `json:"Key"`
 	Shares map[string]string `json:"Shares"`

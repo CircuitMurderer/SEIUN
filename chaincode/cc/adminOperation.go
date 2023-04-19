@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func (s *SmartContract) VerifyCert(ctx TCI, id string, status string) error {
+func (s *SmartContract) VerifyCert(ctx TCI, id string, status string, expDays int) error {
 	certItem, err := s.GetCert(ctx, id)
 	if err != nil {
 		return err
@@ -15,6 +15,7 @@ func (s *SmartContract) VerifyCert(ctx TCI, id string, status string) error {
 	switch status {
 	case "Valid":
 		certItem.Status = ValidCert
+		certItem.ExpDays = expDays
 		certItem.IsuTime = time.Now().Format("2006-01-02 15:04:05")
 	case "Invalid":
 		certItem.Status = InvalidCert

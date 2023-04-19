@@ -1,46 +1,65 @@
 package cc
 
 import (
+	"math"
+
 	"go.dedis.ch/kyber/v3/pairing/bn256"
 	"go.dedis.ch/kyber/v3/share"
 	"go.dedis.ch/kyber/v3/sign/bdn"
 	"go.dedis.ch/kyber/v3/sign/tbls"
 )
 
-type KeyPairs struct {
+type KeyPair struct {
 	PriKey *share.PriShare
 	PubKey *share.PubPoly
+	Sign   []byte
 }
 
-func GenKeys(m, n int, allPeers map[string]string, suite *bn256.Suite, data string) (map[string]*KeyPairs, [][]byte, error) {
+func GenKeys(allPeers map[string]string, suite *bn256.Suite, data string, t float64) (map[string]*KeyPair, error) {
+	n := len(allPeers)
+	m := int(math.Ceil(float64(n) * t))
+
 	msg := []byte(data)
-	keyPairs := make(map[string]*KeyPairs, 0)
+	keyPairs := make(map[string]*KeyPair, 0)
 	secret := suite.G1().Scalar().Pick(suite.RandomStream())
-	
+
 	priPoly := share.NewPriPoly(suite.G2(), m, secret, suite.RandomStream())
 	pubPoly := priPoly.Commit(suite.G2().Point().Base())
-	signs := make([][]byte, 0)
 
 	i := 0
 	priShares := priPoly.Shares(n)
 	for peer := range allPeers {
+		keyPairs[peer] = new(KeyPair)
+
 		keyPairs[peer].PriKey = priShares[i]
 		keyPairs[peer].PubKey = pubPoly
 
 		sign, err := tbls.Sign(suite, keyPairs[peer].PriKey, msg)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 
-		signs = append(signs, sign)
+		keyPairs[peer].Sign = sign
 		i += 1
 	}
 
-	return keyPairs, signs, nil
+	return keyPairs, nil
 }
 
-func SignVerify(m, n int, alivePeers map[string]string, suite *bn256.Suite, keyPairs map[string]*KeyPairs, signs [][]byte, data string) error {
+func SignVerify(alivePeers map[string]string, suite *bn256.Suite, keyPairs map[string]*KeyPair, data string, t float64) error {
+	n := len(keyPairs)
+	m := int(math.Ceil(float64(n) * t))
+	
 	msg := []byte(data)
+	signs := make([][]byte, 0)
+	for peer, keyPair := range keyPairs {
+		_, exists := alivePeers[peer]
+		if !exists {
+			continue
+		}
+
+		signs = append(signs, keyPair.Sign)
+	}
 
 	for peer, keyPair := range keyPairs {
 		_, exists := alivePeers[peer]
@@ -62,25 +81,17 @@ func SignVerify(m, n int, alivePeers map[string]string, suite *bn256.Suite, keyP
 	return nil
 }
 
-
-
-func SignID() error {
-	/*
+func TBLSVerify(data string, allPeers map[string]string, alivePeers map[string]string, threshold float64) error {
 	suite := bn256.NewSuite()
-	data := "THISISATEST"
-	n := 10
-	m := 7
+	keyPairs, err := GenKeys(allPeers, suite, data, threshold)
+	if err != nil {
+		return err
+	}
 
-	keyPairs, signs, err := genKeys(m, n, suite, data)
+	err = SignVerify(alivePeers, suite, keyPairs, data, threshold)
 	if err != nil {
 		return err
 	}
-	
-	err = signVerify(m, n, suite, keyPairs, signs[1:8], data)
-	if err != nil {
-		return err
-	}
-	*/
 
 	return nil
 }

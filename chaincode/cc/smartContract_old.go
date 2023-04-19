@@ -5,62 +5,6 @@ import (
 	"fmt"
 )
 
-func (s *SmartContract) InitLedger(ctx TCI) error {
-	items := []CItem{
-		{ID: "Item-Test1", UserID: "Admin", Status: OtherStatus,
-			IsuTime: "", RvkTime: "", Key: "", Shares: make(map[string]string, 0)},
-		{ID: "Item-Test2", UserID: "Guest", Status: OtherStatus,
-			IsuTime: "", RvkTime: "", Key: "", Shares: make(map[string]string, 0)},
-	}
-
-	alivePeers, err := GetAlivePeers()
-	if err != nil {
-		return err
-	}
-
-	alivePeersJSON, err := json.Marshal(alivePeers)
-	if err != nil {
-		return err
-	}
-
-	err = ctx.GetStub().PutState("AllPeers", alivePeersJSON)
-	if err != nil {
-		return err
-	}
-
-	waitingList := make([]string, 0)
-	waitingJSON, err := json.Marshal(waitingList)
-	if err != nil {
-		return err
-	}
-
-	err = ctx.GetStub().PutState("WaitingList", waitingJSON)
-	if err != nil {
-		return err
-	}
-
-	for _, item := range items {
-		itemJSON, err := json.Marshal(item)
-		if err != nil {
-			return err
-		}
-		err = ctx.GetStub().PutState(item.ID, itemJSON)
-		if err != nil {
-			return fmt.Errorf("failed to put world state. %v", err)
-		}
-	}
-	return nil
-}
-
-func (s *SmartContract) HasItem(ctx TCI, id string) (bool, error) {
-	itemJSON, err := ctx.GetStub().GetState(id)
-	if err != nil {
-		return false, fmt.Errorf("failed to read world state. %v", err)
-	}
-
-	return itemJSON != nil, nil
-}
-
 func (s *SmartContract) GetItem(ctx TCI, id string) (*CertItem, error) {
 	itemJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
