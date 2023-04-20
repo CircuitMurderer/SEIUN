@@ -27,8 +27,8 @@ type ConnectConfig struct {
 }
 
 type Connector struct {
-	Config *ConnectConfig
-	Gateway       *client.Gateway
+	Config  *ConnectConfig
+	Gateway *client.Gateway
 }
 
 func createConnFrom(filePath string) (*Connector, error) {
