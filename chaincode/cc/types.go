@@ -17,6 +17,7 @@ type CertItem struct {
 	IsuTime string `json:"IsuTime"`
 	RvkTime string `json:"RvkTime"`
 	Key     string `json:"Key"`
+	// History []string `json:"History"`
 }
 
 const (
