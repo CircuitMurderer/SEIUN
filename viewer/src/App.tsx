@@ -1,7 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
+// import React from 'react';
+// import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/reset.css'
+import { Button, Space, DatePicker, version } from 'antd';
 
+/* 
 function App() {
   return (
     <div className="App">
@@ -22,5 +25,21 @@ function App() {
     </div>
   );
 }
+*/
+
+const MyButt = () => (
+    <Button type="primary">Button</Button>
+);
+
+const App = () => (
+  <div className="App">
+    <h1>AntD ver: {version}.</h1>
+    <h2>This is a APP.</h2>
+    <Space>
+      <DatePicker />
+      <MyButt />
+    </Space>
+  </div>
+);
 
 export default App;
