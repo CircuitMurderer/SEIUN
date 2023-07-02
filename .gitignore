@@ -5,6 +5,7 @@
 /orgs
 /dker
 */.vscode
+*/.idea
 
 # dependencies
 */node_modules
