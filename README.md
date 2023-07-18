@@ -8,7 +8,7 @@ Usage:
 + Start the Hyperledger Fabric network:
 
 ```shell
-./setDNS.sh
+./setDNS.sh -a
 source ./envPeerCompany.sh
 ./network.sh -u
 ./registerUser.sh
